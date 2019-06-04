@@ -97,7 +97,7 @@ namespace Reactofus
         {
             if (Program.MainWnd.ForceFormatDrive)
             {
-                DriveInfo drive = null;
+                object drive = null;
                 DialogResult answer = DialogResult.No;
 
                 Program.MainWnd.Invoke(new Action(() =>
@@ -105,7 +105,7 @@ namespace Reactofus
                     drive = Program.MainWnd.SelectedDrive;
 
                     answer = MessageBox.Show(
-                        $"WARNING!!!\r\nAll data on drive ({drive.Name}) {drive.VolumeLabel} ({drive.TotalSize / 1024 / 1024} MB) will be removed!\r\n\r\nWould you like to continue?",
+                        $"WARNING!!!\r\nAll data on {drive.ToString()} will be removed!\r\n\r\nWould you like to continue?",
                         "Reactofus - Format Drive",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Warning);
@@ -117,15 +117,15 @@ namespace Reactofus
                 {
                     Program.MainWnd.SetStatus("Formatting drive " + drive + "...");
 
-                    if (!FomratManager.FormatDrive(drive.Name[0], "FAT32"))
-                        throw new Exception("Drive formatting error.");
+                    //if (!FomratManager.FormatDrive(drive.Name[0], "FAT32"))
+                    //    throw new Exception("Drive formatting error.");
                 }
             }
 
-            Program.MainWnd.Invoke(new Action(() =>
-            {
-                Program.MainWnd.SelectedDrive.VolumeLabel = driveLabel;
-            }));
+            //Program.MainWnd.Invoke(new Action(() =>
+            //{
+            //    Program.MainWnd.SelectedDrive.VolumeLabel = driveLabel;
+            //}));
         }
 
         private static void Check()

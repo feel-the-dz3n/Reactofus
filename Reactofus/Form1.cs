@@ -63,8 +63,6 @@ namespace Reactofus
             }
         }
 
-        public DriveInfo SelectedDrive => null;// ((ComboBoxDisk)cbAvailableDevices.SelectedItem).DriveInfo;
-
         public bool ForceFormatDrive
         {
             get => cbFormatDrive.Checked;
@@ -79,44 +77,17 @@ namespace Reactofus
             InitializeComponent();
             this.Text = $"Reactofus v{version}";
 
-            UpdateDrives();
+            SelectedDrive = null;
         }
-
-        public void UpdateDrives()
+        
+        public object SelectedDrive
         {
-            cbAvailableDevices.Items.Clear();
-
-            IEnumerable<DriveManagerDisk> disks;
-
-            //if (!Properties.Settings.Default.ShowAllDrives)
-            //    disks = DriveManager.GetDisks().Where(x => x.IsRemovable);
-            //else
-                disks = DriveManager.GetDisks();
-
-            var chooseDrive = new ComboBoxDisk(disks.Count() >= 1 ? "Choose a disk" : "No disks found!");
-            cbAvailableDevices.Items.Add(chooseDrive);
-            cbAvailableDevices.SelectedItem = chooseDrive;
-
-            foreach (var disk in disks)
+            get => null;
+            set
             {
-                cbAvailableDevices.Items.Add(disk);
-
-                foreach(var part in disk.GetPartitions())
-                {
-                    cbAvailableDevices.Items.Add(part);
-
-                    var logical = part.LogicalDisk;
-                    if (logical != null)
-                    {
-                        cbAvailableDevices.Items.Add(logical);
-
-                        var vol = part.LogicalDisk.Volume;
-
-                        if(vol != null)
-                            cbAvailableDevices.Items.Add(vol);
-                    }
-                }
-            }// new ComboBoxDisk(disk));
+                if (value == null)
+                    linkSetDrive.Text = "Select drive...";
+            }
         }
 
         public void SetStatus(string text)
@@ -150,40 +121,17 @@ namespace Reactofus
             statusProgress.Style = style;
         }
 
-        private void cbAvailableDevices_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (SelectedDriveIsFine())
-            {
-                cbPause.Enabled = false;
-                btnStartStop.Enabled = false;
-            }
-            else
-            {
-                cbPause.Enabled = true;
-                btnStartStop.Enabled = true;
-            }
-        }
-
-        public bool SelectedDriveIsFine()
-        {
-            var item = (ComboBoxDisk)cbAvailableDevices.SelectedItem;
-
-            if (item.IsOK)
-                return true;
-            else
-                return false;
-        }
-
         private void btnStartStop_Click(object sender, EventArgs e)
         {
             if (!Working)
             {
-                if (!SelectedDriveIsFine())
-                {
-                    MessageBox.Show("Selected drive is not fine");
-                    UpdateDrives();
-                    return;
-                }
+                // FIX me
+            //    if (!SelectedDriveIsFine())
+            //    {
+            //        MessageBox.Show("Selected drive is not fine");
+            //        UpdateDrives();
+            //        return;
+            //    }
 
                 if (tabControl1.SelectedTab == tabPageRamDisk)
                     Worker.RamDiskISOWorkerStart();
@@ -227,9 +175,6 @@ namespace Reactofus
             Environment.Exit(0);
         }
 
-        private void cbAvailableDevices_DropDown(object sender, EventArgs e)
-            => UpdateDrives();
-
         private void btnGitHub_Click(object sender, EventArgs e)
             => Process.Start("https://github.com/feel-the-dz3n/Reactofus");
 
@@ -238,5 +183,14 @@ namespace Reactofus
 
         private void btnSettings_Click(object sender, EventArgs e)
             => new FormSettings().ShowDialog();
+
+        private void linkSetDrive_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var d = new FormDriveSelector();
+            if(d.ShowDialog() == DialogResult.OK)
+            {
+                // set drive FIX ME
+            }
+        }
     }
 }

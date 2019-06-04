@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageRamDisk = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
@@ -39,14 +40,14 @@
             this.btnBugReport = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnGitHub = new System.Windows.Forms.Button();
-            this.cbAvailableDevices = new System.Windows.Forms.ComboBox();
             this.btnStartStop = new System.Windows.Forms.Button();
             this.cbPause = new System.Windows.Forms.CheckBox();
             this.cbFormatDrive = new System.Windows.Forms.CheckBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.cbVolume = new System.Windows.Forms.ComboBox();
+            this.linkSetDrive = new System.Windows.Forms.LinkLabel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPageRamDisk.SuspendLayout();
             this.tabPageMore.SuspendLayout();
@@ -60,10 +61,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPageRamDisk);
             this.tabControl1.Controls.Add(this.tabPageMore);
-            this.tabControl1.Location = new System.Drawing.Point(12, 66);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(361, 190);
+            this.tabControl1.Size = new System.Drawing.Size(361, 242);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageRamDisk
@@ -75,7 +76,7 @@
             this.tabPageRamDisk.Location = new System.Drawing.Point(4, 22);
             this.tabPageRamDisk.Name = "tabPageRamDisk";
             this.tabPageRamDisk.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageRamDisk.Size = new System.Drawing.Size(353, 164);
+            this.tabPageRamDisk.Size = new System.Drawing.Size(353, 216);
             this.tabPageRamDisk.TabIndex = 0;
             this.tabPageRamDisk.Text = "RamDisk ISO";
             this.tabPageRamDisk.UseVisualStyleBackColor = true;
@@ -83,7 +84,7 @@
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.Location = new System.Drawing.Point(0, 100);
+            this.label3.Location = new System.Drawing.Point(0, 126);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(353, 24);
             this.label3.TabIndex = 3;
@@ -93,7 +94,7 @@
             // btnBrowseISORamDisk
             // 
             this.btnBrowseISORamDisk.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnBrowseISORamDisk.Location = new System.Drawing.Point(315, 62);
+            this.btnBrowseISORamDisk.Location = new System.Drawing.Point(315, 88);
             this.btnBrowseISORamDisk.Name = "btnBrowseISORamDisk";
             this.btnBrowseISORamDisk.Size = new System.Drawing.Size(32, 23);
             this.btnBrowseISORamDisk.TabIndex = 2;
@@ -105,7 +106,7 @@
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 48);
+            this.label2.Location = new System.Drawing.Point(6, 74);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(175, 13);
             this.label2.TabIndex = 1;
@@ -114,7 +115,7 @@
             // tbRamDiskISOPath
             // 
             this.tbRamDiskISOPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbRamDiskISOPath.Location = new System.Drawing.Point(6, 64);
+            this.tbRamDiskISOPath.Location = new System.Drawing.Point(6, 90);
             this.tbRamDiskISOPath.Name = "tbRamDiskISOPath";
             this.tbRamDiskISOPath.Size = new System.Drawing.Size(303, 20);
             this.tbRamDiskISOPath.TabIndex = 0;
@@ -176,19 +177,6 @@
             this.btnGitHub.UseVisualStyleBackColor = true;
             this.btnGitHub.Click += new System.EventHandler(this.btnGitHub_Click);
             // 
-            // cbAvailableDevices
-            // 
-            this.cbAvailableDevices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbAvailableDevices.FormattingEnabled = true;
-            this.cbAvailableDevices.Location = new System.Drawing.Point(12, 12);
-            this.cbAvailableDevices.Name = "cbAvailableDevices";
-            this.cbAvailableDevices.Size = new System.Drawing.Size(361, 21);
-            this.cbAvailableDevices.TabIndex = 1;
-            this.cbAvailableDevices.Text = "Choose USB device";
-            this.cbAvailableDevices.DropDown += new System.EventHandler(this.cbAvailableDevices_DropDown);
-            this.cbAvailableDevices.SelectedIndexChanged += new System.EventHandler(this.cbAvailableDevices_SelectedIndexChanged);
-            // 
             // btnStartStop
             // 
             this.btnStartStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -248,28 +236,29 @@
             this.statusProgress.Size = new System.Drawing.Size(145, 16);
             this.statusProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             // 
-            // cbVolume
+            // linkSetDrive
             // 
-            this.cbVolume.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbVolume.FormattingEnabled = true;
-            this.cbVolume.Location = new System.Drawing.Point(12, 39);
-            this.cbVolume.Name = "cbVolume";
-            this.cbVolume.Size = new System.Drawing.Size(361, 21);
-            this.cbVolume.TabIndex = 10;
-            this.cbVolume.Text = "Choose volume";
+            this.linkSetDrive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkSetDrive.AutoSize = true;
+            this.linkSetDrive.Location = new System.Drawing.Point(9, 265);
+            this.linkSetDrive.Name = "linkSetDrive";
+            this.linkSetDrive.Size = new System.Drawing.Size(85, 13);
+            this.linkSetDrive.TabIndex = 10;
+            this.linkSetDrive.TabStop = true;
+            this.linkSetDrive.Text = "[0] Disk - 500GB";
+            this.toolTip1.SetToolTip(this.linkSetDrive, "Click to change...");
+            this.linkSetDrive.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkSetDrive_LinkClicked);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(385, 310);
-            this.Controls.Add(this.cbVolume);
+            this.Controls.Add(this.linkSetDrive);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.cbFormatDrive);
             this.Controls.Add(this.cbPause);
             this.Controls.Add(this.btnStartStop);
-            this.Controls.Add(this.cbAvailableDevices);
             this.Controls.Add(this.tabControl1);
             this.MaximizeBox = false;
             this.Name = "Form1";
@@ -291,7 +280,6 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageRamDisk;
-        private System.Windows.Forms.ComboBox cbAvailableDevices;
         private System.Windows.Forms.Button btnStartStop;
         private System.Windows.Forms.CheckBox cbPause;
         private System.Windows.Forms.CheckBox cbFormatDrive;
@@ -307,7 +295,8 @@
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnGitHub;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cbVolume;
+        private System.Windows.Forms.LinkLabel linkSetDrive;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

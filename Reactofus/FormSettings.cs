@@ -23,7 +23,7 @@ namespace Reactofus
             Properties.Settings.Default.ShowAllDrives = cbNotOnlyRemovable.Checked;
             Properties.Settings.Default.Save();
 
-            Program.MainWnd.UpdateDrives();
+            Program.MainWnd.SelectedDrive = null;
         }
     }
 }

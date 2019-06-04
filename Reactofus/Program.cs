@@ -9,8 +9,7 @@ namespace Reactofus
     {
         public static Form1 MainWnd;
 
-        public static DriveInfo SelectedDrive
-            => (DriveInfo)MainWnd.Invoke(new Func<DriveInfo>(() => MainWnd.SelectedDrive));
+        public static object SelectedDrive => MainWnd.SelectedDrive;
 
         /// <summary>
         /// The main entry point for the application.
