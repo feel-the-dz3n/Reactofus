@@ -55,8 +55,9 @@ namespace Reactofus
 
                 tabControl1.Enabled = !value;
                 cbFormatDrive.Enabled = !value;
+                linkSetDrive.Enabled = !value;
 
-                if (value)
+                if (value) 
                     btnStartStop.Text = "Abort";
                 else
                     btnStartStop.Text = "Start";
@@ -79,14 +80,43 @@ namespace Reactofus
 
             SelectedDrive = null;
         }
-        
+
+        private object _selectedDrive = null;
         public object SelectedDrive
         {
-            get => null;
+            get => _selectedDrive;
             set
             {
+                _selectedDrive = value;
+
                 if (value == null)
+                {
                     linkSetDrive.Text = "Select drive...";
+
+                    cbFormatDrive.Checked = false;
+                    cbFormatDrive.Enabled = false;
+                    btnStartStop.Enabled = false;
+                }
+                else if (value is DriveManagerDisk || value is DriveManagerLogicalDisk)
+                {
+                    linkSetDrive.Text = value.ToString();
+
+                    if (value is DriveManagerDisk)
+                    {
+                        cbFormatDrive.Checked = true;
+                        cbFormatDrive.Enabled = false;
+
+                        btnStartStop.Enabled = true;
+                    }
+                    else if (value is DriveManagerLogicalDisk)
+                    {
+                        cbFormatDrive.Checked = false;
+                        cbFormatDrive.Enabled = true;
+
+                        btnStartStop.Enabled = false;
+                    }
+                }
+                else throw new NotSupportedException();
             }
         }
 
@@ -187,10 +217,15 @@ namespace Reactofus
         private void linkSetDrive_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var d = new FormDriveSelector();
-            if(d.ShowDialog() == DialogResult.OK)
-            {
-                // set drive FIX ME
-            }
+
+            if (d.ShowDialog() == DialogResult.OK)
+                SelectedDrive = d.SelectedDrive;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if (Environment.OSVersion.Version.Major <= 5 && Environment.OSVersion.Version.Minor <= 1)
+                MessageBox.Show("Unsupported Windows version.\r\nWindows Server 2003 required.", "Reactofus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

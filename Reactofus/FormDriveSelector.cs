@@ -12,9 +12,18 @@ namespace Reactofus
 {
     public partial class FormDriveSelector : Form
     {
+        public bool Finished => linkUpdate.Enabled;
+        private bool ExitOnFinish = false;
+
+        public object SelectedDrive => treeView1.SelectedNode.Tag; 
+
         public FormDriveSelector()
         {
             InitializeComponent();
+            btnOK.Enabled = false;
+
+            if (!Properties.Settings.Default.ShowAllDrives)
+                this.Text += " (only removable media!";
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -29,7 +38,6 @@ namespace Reactofus
         public void PerformUpdate()
         {
             treeView1.Nodes.Clear();
-            var loadingNode = treeView1.Nodes.Add("Loading...");
             treeView1.Cursor = Cursors.AppStarting;
             linkUpdate.Enabled = false;
 
@@ -39,54 +47,51 @@ namespace Reactofus
 
                 foreach (var disk in disks)
                 {
-                    var diskIndex = disk.Index;
-                    var diskSize = disk.Size;
+                    if (!Properties.Settings.Default.ShowAllDrives && !disk.IsRemovable)
+                        continue;
+                    
+                    var diskText = disk.ToString();
                     TreeNode diskNode = null;
 
                     this.Invoke(new Action(() =>
                     {
                         diskNode = new TreeNode();
                         diskNode.Tag = disk;
-                        diskNode.Text = $"[Disk {diskIndex}] - Size: {diskSize / 1024 / 1024 / 1024} GB";
+                        diskNode.Text = diskText;
 
                         treeView1.Nodes.Add(diskNode);
                     }));
 
                     foreach(var part in disk.GetPartitions())
                     {
-                        var partIndex = part.PartitionIndex;
-                        var partSize = part.Size;
-                        var partType = part.Type;
+                        var partText = part.ToString();
                         TreeNode partNode = null;
 
                         this.Invoke(new Action(() =>
                         {
                             partNode = new TreeNode();
                             partNode.Tag = part;
-                            partNode.Text = $"[Partition {partIndex}] - Size: {partSize / 1024 / 1024} MB - Type: {partType}";
+                            partNode.Text = partText;
 
                             diskNode.Nodes.Add(partNode);
+                            diskNode.ExpandAll();
                         }));
 
                         var logical = part.LogicalDisk;
 
                         if(logical != null)
                         {
-                            var logFree = logical.FreeSpace;
-                            var logLetter = logical.Volume.DriveLetter;
-                            var logName = logical.VolumeName;
-                            var logBoot = logical.Volume.BootVolume;
+                            var logText = logical.ToString();
                             TreeNode logicalNode = null;
-
-                            if (logName == null) logName = "No Name";
 
                             this.Invoke(new Action(() =>
                             {
                                 logicalNode = new TreeNode();
                                 logicalNode.Tag = logical;
-                                logicalNode.Text = $"[Drive {logLetter} \"{logName}\"] - Boot: {logBoot} - Free Space: {logFree / 1024 / 1024} MB";
+                                logicalNode.Text = logText;
 
                                 partNode.Nodes.Add(logicalNode);
+                                partNode.ExpandAll();
                             }));
                         }
                     }
@@ -94,14 +99,39 @@ namespace Reactofus
 
                 this.Invoke(new Action(() =>
                 {
-                    treeView1.Nodes.Remove(loadingNode);
                     treeView1.Cursor = Cursors.Default;
                     linkUpdate.Enabled = true;
+
+                    if (ExitOnFinish)
+                    {
+                        this.Enabled = true;
+                        this.Close();
+                    }
                 }));
             }).Start();
         }
 
         private void linkUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
             => PerformUpdate();
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            var item = treeView1.SelectedNode;
+
+            if (item.Tag is DriveManagerDisk || item.Tag is DriveManagerLogicalDisk)
+                btnOK.Enabled = true;
+            else
+                btnOK.Enabled = false;
+        }
+
+        private void FormDriveSelector_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!Finished)
+            {
+                this.Enabled = false;
+                e.Cancel = true;
+                ExitOnFinish = true;
+            }
+        }
     }
 }

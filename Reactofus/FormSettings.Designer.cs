@@ -36,7 +36,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(178, 54);
+            this.btnOK.Location = new System.Drawing.Point(226, 55);
             this.btnOK.Margin = new System.Windows.Forms.Padding(15);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
@@ -49,9 +49,9 @@
             this.cbNotOnlyRemovable.AutoSize = true;
             this.cbNotOnlyRemovable.Location = new System.Drawing.Point(12, 12);
             this.cbNotOnlyRemovable.Name = "cbNotOnlyRemovable";
-            this.cbNotOnlyRemovable.Size = new System.Drawing.Size(176, 17);
+            this.cbNotOnlyRemovable.Size = new System.Drawing.Size(268, 17);
             this.cbNotOnlyRemovable.TabIndex = 1;
-            this.cbNotOnlyRemovable.Text = "Show not only removable drives";
+            this.cbNotOnlyRemovable.Text = "Show not only removable drives (EXPERIMENTAL)";
             this.cbNotOnlyRemovable.UseVisualStyleBackColor = true;
             this.cbNotOnlyRemovable.CheckedChanged += new System.EventHandler(this.cbNotOnlyRemovable_CheckedChanged);
             // 
@@ -60,7 +60,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(265, 89);
+            this.ClientSize = new System.Drawing.Size(313, 90);
             this.Controls.Add(this.cbNotOnlyRemovable);
             this.Controls.Add(this.btnOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

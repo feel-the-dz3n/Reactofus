@@ -93,7 +93,7 @@ namespace Reactofus
         }
 
         public override string ToString()
-            => $"[{VolumeName}] Logical Disk - {FileSystem} - {Size / 1024 / 1024} MB - Free: {FreeSpace / 1024 /1024} MB";
+            => $"[Drive {Volume.DriveLetter} \"{(VolumeName ?? "No Name")}\"]{(Volume.BootVolume ? " [BOOT]" : "")} Free Space: {FreeSpace / 1024 / 1024} MB";
     }
 
     public class DriveManagerPartition : ProtectedForQuery
@@ -144,7 +144,7 @@ namespace Reactofus
         }
 
         public override string ToString()
-            => $"[{DiskIndex}, {PartitionIndex}] Partition - {Size / 1024 / 1024} MB";
+            => $"[Partition {PartitionIndex}] Size: {Size / 1024 / 1024} MB - Type: {Type}";
     }
 
     public class DriveManagerDisk : ProtectedForQuery
@@ -199,7 +199,7 @@ namespace Reactofus
         }
 
         public override string ToString()
-            => $"[{Index}] Disk - {Model} - {MediaType}";
+            => $"[Disk {Index}] Size: {Size / 1024 / 1024 / 1024} GB - {MediaType}";
     }
 
     public class ProtectedForQuery
