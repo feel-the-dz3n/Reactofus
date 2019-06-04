@@ -117,7 +117,7 @@ namespace Reactofus
                 {
                     Program.MainWnd.SetStatus("Formatting drive " + drive + "...");
 
-                    if (!DriveManager.FormatDrive(drive.Name[0], "FAT32"))
+                    if (!FomratManager.FormatDrive(drive.Name[0], "FAT32"))
                         throw new Exception("Drive formatting error.");
                 }
             }

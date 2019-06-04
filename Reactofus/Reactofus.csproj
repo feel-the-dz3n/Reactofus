@@ -51,6 +51,7 @@
     <Compile Include="DefaultWorker.cs" />
     <Compile Include="DriveInfoComboBoxItem.cs" />
     <Compile Include="DriveManager.cs" />
+    <Compile Include="FormatManager.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

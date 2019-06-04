@@ -5,27 +5,52 @@ using System.Text;
 
 namespace Reactofus
 {
-    public class DriveInfoComboBoxItem
+    public class ComboBoxDisk
     {
-        public DriveInfo DriveInfo;
+        public object DiskOrVolume;
         public string OverrideString;
 
-        public DriveInfoComboBoxItem(DriveInfo info)
-            => DriveInfo = info;
+        public ComboBoxDisk(object DiskOrVolume)
+            => this.DiskOrVolume = DiskOrVolume;
 
-        public DriveInfoComboBoxItem(string overrideString = "Choose a drive")
+        public ComboBoxDisk(string overrideString = "Choose a drive")
             => OverrideString = overrideString;
+
+        public bool IsOK
+        {
+            get
+            {
+                // fix me
+                return false;
+            }
+        }
 
         public override string ToString()
         {
             // Text used for ComboBox
 
-            if (DriveInfo == null) return OverrideString;
+            if (DiskOrVolume == null) return OverrideString;
 
-            if (DriveInfo.IsReady)
-                return $"{DriveInfo.Name} - {DriveInfo.VolumeLabel} - {DriveInfo.DriveFormat} - {DriveInfo.TotalSize / 1024 / 1024} MB";
-            else
-                return $"{DriveInfo.Name} - Not Ready";
+            if (DiskOrVolume is DriveManagerDisk)
+            {
+                var disk = (DriveManagerDisk)DiskOrVolume;
+
+                if (disk.IsOK)
+                    return $"[{disk.Index}] {disk.Model} - {disk.Size / 1024 / 1024} MB";
+                else
+                    return $"[{disk.Index}] {disk.Model} - {disk.Status}";
+            }
+            else if (DiskOrVolume is DriveManagerPartition)
+            {
+                var part = (DriveManagerDisk)DiskOrVolume;
+
+                return "Partition";
+                //if (disk.IsOK)
+                //    return $"{disk.Model} - {disk.Size / 1024 / 1024} MB";
+                //else
+                //    return $"{disk.Model} - {disk.Status}";
+            }
+            else return "Unknown";
         }
     }
 }

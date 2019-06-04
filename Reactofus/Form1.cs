@@ -63,7 +63,7 @@ namespace Reactofus
             }
         }
 
-        public DriveInfo SelectedDrive => ((DriveInfoComboBoxItem)cbAvailableDevices.SelectedItem).DriveInfo;
+        public DriveInfo SelectedDrive => null;// ((ComboBoxDisk)cbAvailableDevices.SelectedItem).DriveInfo;
 
         public bool ForceFormatDrive
         {
@@ -86,19 +86,19 @@ namespace Reactofus
         {
             cbAvailableDevices.Items.Clear();
 
-            IEnumerable<DriveInfo> drives;
+            IEnumerable<DriveManagerDisk> disks;
 
-            if (!Properties.Settings.Default.ShowAllDrives)
-                drives = DriveInfo.GetDrives().Where(x => x.DriveType == DriveType.Removable);
-            else
-                drives = DriveInfo.GetDrives();
+            //if (!Properties.Settings.Default.ShowAllDrives)
+            //    disks = DriveManager.GetDisks().Where(x => x.IsRemovable);
+            //else
+                disks = DriveManager.GetDisks();
 
-            var chooseDrive = new DriveInfoComboBoxItem(drives.Count() >= 1 ? "Choose a drive" : "No drives found!");
+            var chooseDrive = new ComboBoxDisk(disks.Count() >= 1 ? "Choose a disk" : "No disks found!");
             cbAvailableDevices.Items.Add(chooseDrive);
             cbAvailableDevices.SelectedItem = chooseDrive;
             
-            foreach (var drive in drives)
-                cbAvailableDevices.Items.Add(new DriveInfoComboBoxItem(drive));
+            foreach (var disk in disks)
+                cbAvailableDevices.Items.Add(new ComboBoxDisk(disk));
         }
 
         public void SetStatus(string text)
@@ -134,9 +134,7 @@ namespace Reactofus
 
         private void cbAvailableDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var item = (DriveInfoComboBoxItem)cbAvailableDevices.SelectedItem;
-
-            if (item.DriveInfo == null || !item.DriveInfo.IsReady)
+            if (SelectedDriveIsFine())
             {
                 cbPause.Enabled = false;
                 btnStartStop.Enabled = false;
@@ -150,9 +148,9 @@ namespace Reactofus
 
         public bool SelectedDriveIsFine()
         {
-            var item = (DriveInfoComboBoxItem)cbAvailableDevices.SelectedItem;
+            var item = (ComboBoxDisk)cbAvailableDevices.SelectedItem;
 
-            if (item.DriveInfo != null && item.DriveInfo.IsReady)
+            if (item.IsOK)
                 return true;
             else
                 return false;
