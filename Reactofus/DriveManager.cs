@@ -113,7 +113,7 @@ namespace Reactofus
         {
             get
             {
-                using (ManagementObjectSearcher items = new ManagementObjectSearcher("ASSOCIATORS OF {Win32_DiskPartition.DeviceID='" + Protect(DeviceID) + " WHERE AssocClass = Win32_LogicalDiskToPartition"))
+                using (ManagementObjectSearcher items = new ManagementObjectSearcher("ASSOCIATORS OF {Win32_DiskPartition.DeviceID='" + Protect(DeviceID) + "'} WHERE AssocClass = Win32_LogicalDiskToPartition"))
                 {
                     foreach (ManagementObject item in items.Get())
                     {
@@ -182,7 +182,7 @@ namespace Reactofus
         {
             List<DriveManagerPartition> result = new List<DriveManagerPartition>();
 
-            using (ManagementObjectSearcher items = new ManagementObjectSearcher("ASSOCIATORS OF {Win32_DiskDrive.DeviceID='" + Protect(DeviceID) + " WHERE AssocClass = Win32_DiskDriveToDiskPartition"))
+            using (ManagementObjectSearcher items = new ManagementObjectSearcher("ASSOCIATORS OF {Win32_DiskDrive.DeviceID='" + DeviceID + "'} WHERE AssocClass = Win32_DiskDriveToDiskPartition"))
             {
                 foreach (ManagementObject item in items.Get())
                 {

@@ -96,9 +96,27 @@ namespace Reactofus
             var chooseDrive = new ComboBoxDisk(disks.Count() >= 1 ? "Choose a disk" : "No disks found!");
             cbAvailableDevices.Items.Add(chooseDrive);
             cbAvailableDevices.SelectedItem = chooseDrive;
-            
+
             foreach (var disk in disks)
-                cbAvailableDevices.Items.Add(new ComboBoxDisk(disk));
+            {
+                cbAvailableDevices.Items.Add(disk);
+
+                foreach(var part in disk.GetPartitions())
+                {
+                    cbAvailableDevices.Items.Add(part);
+
+                    var logical = part.LogicalDisk;
+                    if (logical != null)
+                    {
+                        cbAvailableDevices.Items.Add(logical);
+
+                        var vol = part.LogicalDisk.Volume;
+
+                        if(vol != null)
+                            cbAvailableDevices.Items.Add(vol);
+                    }
+                }
+            }// new ComboBoxDisk(disk));
         }
 
         public void SetStatus(string text)
