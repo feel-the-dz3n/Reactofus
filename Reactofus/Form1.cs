@@ -158,17 +158,10 @@ namespace Reactofus
         {
             if (!Working)
             {
-                // FIX me
-            //    if (!SelectedDriveIsFine())
-            //    {
-            //        MessageBox.Show("Selected drive is not fine");
-            //        UpdateDrives();
-            //        return;
-            //    }
-
                 if (tabControl1.SelectedTab == tabPageRamDisk)
                     Worker.RamDiskISOWorkerStart();
-                // else...
+                else
+                    MessageBox.Show("Wrong selection", "Reactofus");
             }
             else
             {
