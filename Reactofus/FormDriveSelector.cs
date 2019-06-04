@@ -15,7 +15,7 @@ namespace Reactofus
         public bool Finished => linkUpdate.Enabled;
         private bool ExitOnFinish = false;
 
-        public object SelectedDrive => treeView1.SelectedNode.Tag; 
+        public DriveManagerObject SelectedDrive => (DriveManagerObject)treeView1.SelectedNode.Tag; 
 
         public FormDriveSelector()
         {
@@ -23,11 +23,21 @@ namespace Reactofus
             btnOK.Enabled = false;
 
             if (!Properties.Settings.Default.ShowAllDrives)
-                this.Text += " (only removable media!";
+                this.Text += " (only removable media!)";
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            if(SelectedDrive is DriveManagerDisk)
+            {
+                // FIX ME
+                MessageBox.Show("Disk operations not implemented yet. Choose volume instead.", "Reactofus", MessageBoxButtons.OK);
+                return;
+
+                var ans = MessageBox.Show("WARNING! You selected a whole disk! All data will be erased after starting process. Continue?", "Reactofus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (ans == DialogResult.No) return;
+            }
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

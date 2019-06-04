@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Management;
 
 namespace Reactofus
 {
@@ -97,7 +98,7 @@ namespace Reactofus
         {
             if (Program.MainWnd.ForceFormatDrive)
             {
-                object drive = null;
+                DriveManagerObject drive = Program.MainWnd.SelectedDrive;
                 DialogResult answer = DialogResult.No;
 
                 Program.MainWnd.Invoke(new Action(() =>
@@ -105,7 +106,7 @@ namespace Reactofus
                     drive = Program.MainWnd.SelectedDrive;
 
                     answer = MessageBox.Show(
-                        $"WARNING!!!\r\nAll data on {drive.ToString()} will be removed!\r\n\r\nWould you like to continue?",
+                        $"WARNING!!!\r\nAll data on {drive.GetName()} will be ERASED!\r\n\r\nContinue?",
                         "Reactofus - Format Drive",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Warning);
@@ -115,10 +116,49 @@ namespace Reactofus
                     throw new Exception("User cancelled formatting.");
                 else if (answer == DialogResult.Yes)
                 {
-                    Program.MainWnd.SetStatus("Formatting drive " + drive + "...");
+                    bool Completed = false;
+                    Exception CompletedException = null;
 
-                    //if (!FomratManager.FormatDrive(drive.Name[0], "FAT32"))
-                    //    throw new Exception("Drive formatting error.");
+                    Program.MainWnd.SetStatus("Formatting " + drive.GetName() + "...");
+
+                    Thread.Sleep(5000);
+
+                    if(drive is DriveManagerLogicalDisk)
+                    {
+                        var logical = (DriveManagerLogicalDisk)drive;
+                        var vol = logical.Volume;
+
+                        var watcher = new ManagementOperationObserver();
+
+                        watcher.Completed += (sender, completedArgs) =>
+                        {
+                            if (completedArgs.Status != ManagementStatus.NoError)
+                            {
+                                CompletedException = new Exception("Formatting error!\r\nStatus: " + completedArgs.Status.ToString());
+                            }
+
+                            Completed = true;
+                        };
+
+                        watcher.Progress += (sender, progressArgs) =>
+                        {
+                            Program.MainWnd.SetProgressFromValues(
+                                progressArgs.Current,
+                                progressArgs.UpperBound);
+                        };
+
+                        vol.Format(watcher, DriveManager.FileSystem.FAT32, label:driveLabel);
+
+                        while (!Completed)
+                            Thread.Sleep(1000);
+
+                        if (CompletedException != null)
+                            throw CompletedException;
+                    }
+                    else if(drive is DriveManagerDisk)
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
             }
 
@@ -144,7 +184,7 @@ namespace Reactofus
         {
             Program.MainWnd.Invoke(new Action(() =>
             {
-                MessageBox.Show("Completed!", "Reactofus", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Completed!", "Reactofus", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }));
         }
 

@@ -8,6 +8,11 @@ namespace Reactofus
 {
     public class DriveManager
     {
+        public enum FileSystem
+        {
+            NTFS, FAT, FAT32
+        }
+
         public static DriveManagerDisk[] GetDisks()
         {
             List<DriveManagerDisk> result = new List<DriveManagerDisk>();
@@ -23,7 +28,7 @@ namespace Reactofus
             return result.ToArray();
         }
     }
-    public class DriveManagerVolume : ProtectedForQuery
+    public class DriveManagerVolume : DriveManagerObject
     {
         public uint SerialNumber { get; private set; }
 
@@ -49,6 +54,21 @@ namespace Reactofus
             return default(T);
         }
 
+        public bool Format(ManagementOperationObserver watcher, DriveManager.FileSystem FileSystem = DriveManager.FileSystem.FAT32, bool quickFormat = true, uint clusterSize = 4096, string label = "", bool enableCompression = false)
+        {
+            var fileSystem = FileSystem.ToString();
+
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(DefaultSearchQuery))
+            {
+                foreach (ManagementObject vi in searcher.Get())
+                {
+                    vi.InvokeMethod(watcher, "Format", new object[] { fileSystem, quickFormat, clusterSize, label, enableCompression });
+                }
+            }
+
+            return true;
+        }
+
         public DriveManagerVolume(uint serial)
         {
             SerialNumber = serial;
@@ -58,7 +78,7 @@ namespace Reactofus
             => $"[{DriveLetter} - {Label}] Volume - {(BootVolume ? "Boot - " : "")}";
     }
 
-    public class DriveManagerLogicalDisk : ProtectedForQuery
+    public class DriveManagerLogicalDisk : DriveManagerObject
     {
         public string DeviceID { get; private set; }
 
@@ -96,7 +116,7 @@ namespace Reactofus
             => $"[Drive {Volume.DriveLetter} \"{(VolumeName ?? "No Name")}\"]{(Volume.BootVolume ? " [BOOT]" : "")} Free Space: {FreeSpace / 1024 / 1024} MB";
     }
 
-    public class DriveManagerPartition : ProtectedForQuery
+    public class DriveManagerPartition : DriveManagerObject
     {
         public string DeviceID { get; private set; }
 
@@ -147,7 +167,7 @@ namespace Reactofus
             => $"[Partition {PartitionIndex}] Size: {Size / 1024 / 1024} MB - Type: {Type}";
     }
 
-    public class DriveManagerDisk : ProtectedForQuery
+    public class DriveManagerDisk : DriveManagerObject
     {
         public string DeviceID { get; private set; }
 
@@ -202,8 +222,24 @@ namespace Reactofus
             => $"[Disk {Index}] Size: {Size / 1024 / 1024 / 1024} GB - {MediaType}";
     }
 
-    public class ProtectedForQuery
+    public class DriveManagerObject
     {
+        public string GetName()
+        {
+            if (this is DriveManagerDisk)
+            {
+                var obj = (DriveManagerDisk)this;
+                return "Disk " + obj.Index + " (" + obj.Size / 1024 / 1024 / 1024 + " GB)";
+            }
+            else if (this is DriveManagerLogicalDisk)
+            {
+                var obj = (DriveManagerLogicalDisk)this;
+                return "Logical Disk (" + obj.Volume.DriveLetter + ") " + obj.VolumeName + " (" + obj.Size / 1024 / 1024 + " MB)";
+            }
+
+            return "Unknown";
+        }
+
         public string Protect(string input)
         {
             StringBuilder b = new StringBuilder();

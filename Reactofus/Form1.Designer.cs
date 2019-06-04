@@ -78,7 +78,7 @@
             this.tabPageRamDisk.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageRamDisk.Size = new System.Drawing.Size(552, 187);
             this.tabPageRamDisk.TabIndex = 0;
-            this.tabPageRamDisk.Text = "RamDisk ISO";
+            this.tabPageRamDisk.Text = "Create bootable drive with RamDisk ISO";
             this.tabPageRamDisk.UseVisualStyleBackColor = true;
             // 
             // label3
@@ -86,7 +86,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Location = new System.Drawing.Point(0, 111);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(552, 24);
+            this.label3.Size = new System.Drawing.Size(552, 26);
             this.label3.TabIndex = 3;
             this.label3.Text = "Required file system: FAT32";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -158,7 +158,7 @@
             // btnSettings
             // 
             this.btnSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnSettings.Location = new System.Drawing.Point(221, 102);
+            this.btnSettings.Location = new System.Drawing.Point(221, 64);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(112, 23);
             this.btnSettings.TabIndex = 12;
@@ -169,7 +169,7 @@
             // btnGitHub
             // 
             this.btnGitHub.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnGitHub.Location = new System.Drawing.Point(221, 73);
+            this.btnGitHub.Location = new System.Drawing.Point(221, 102);
             this.btnGitHub.Name = "btnGitHub";
             this.btnGitHub.Size = new System.Drawing.Size(112, 23);
             this.btnGitHub.TabIndex = 11;
@@ -225,7 +225,7 @@
             // tbStatus
             // 
             this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Size = new System.Drawing.Size(223, 17);
+            this.tbStatus.Size = new System.Drawing.Size(422, 17);
             this.tbStatus.Spring = true;
             this.tbStatus.Text = "Ready";
             this.tbStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

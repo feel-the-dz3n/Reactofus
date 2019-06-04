@@ -81,12 +81,18 @@ namespace Reactofus
             SelectedDrive = null;
         }
 
-        private object _selectedDrive = null;
-        public object SelectedDrive
+        private DriveManagerObject _selectedDrive = null;
+        public DriveManagerObject SelectedDrive
         {
             get => _selectedDrive;
             set
             {
+                if (InvokeRequired)
+                {
+                    Invoke(new Action(() => SelectedDrive = value));
+                    return;
+                }
+
                 _selectedDrive = value;
 
                 if (value == null)
@@ -100,20 +106,17 @@ namespace Reactofus
                 else if (value is DriveManagerDisk || value is DriveManagerLogicalDisk)
                 {
                     linkSetDrive.Text = value.ToString();
+                    btnStartStop.Enabled = true;
 
                     if (value is DriveManagerDisk)
                     {
                         cbFormatDrive.Checked = true;
                         cbFormatDrive.Enabled = false;
-
-                        btnStartStop.Enabled = true;
                     }
                     else if (value is DriveManagerLogicalDisk)
                     {
                         cbFormatDrive.Checked = false;
                         cbFormatDrive.Enabled = true;
-
-                        btnStartStop.Enabled = false;
                     }
                 }
                 else throw new NotSupportedException();
