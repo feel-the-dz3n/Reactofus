@@ -228,77 +228,75 @@ namespace Reactofus
         {
             try
             {
+                cbReactOSEditions.Items.Clear();
+
                 var path = tbPathInstallReactOS.Text;
+
+                if (path.Length <= 2)
+                {
+                    SetInstallReactOSStatus("Wrong path", false);
+                    return;
+                }
+
                 var ntoskrnlPath = Path.Combine(path, "reactos", "system32", "ntoskrnl.exe");
                 var freeldrPath = Path.Combine(path, "freeldr.ini");
 
                 if (!File.Exists(ntoskrnlPath) &&
                     !File.Exists(freeldrPath))
                 {
-                    SetInstallReactOSStatus("ReactOS system files not found", RosInstallStatus.Error);
+                    SetInstallReactOSStatus("ReactOS system files not found", false);
                     return;
                 }
                 else // kernel & boot info found
                 {
-                    string freeldrConfig = "";
-                    bool bootcd = false, livecd = false;
+                    List<ROSInstallEdition> Editions = new List<ROSInstallEdition>();
 
                     // check freeldr.ini to detect bootcd or livecd
-                    using (StreamReader r = new StreamReader(freeldrPath))
-                        freeldrConfig = r.ReadToEnd();
+                    var freeldrConfig = new INIParser(freeldrPath);
 
-                    string[] freeldrRows = freeldrConfig.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-                    for (int i = 0; i < freeldrRows.Length; i++)
+                    foreach(var section in freeldrConfig.Sections)
                     {
-                        var row = freeldrRows[i];
-
-                        if (row.Contains('='))
+                        var IsSetup = section.Name.Equals("Setup", StringComparison.OrdinalIgnoreCase);
+                        var IsLive = section.Name.Equals("LiveCD", StringComparison.OrdinalIgnoreCase);
+                        if (IsSetup || IsLive)
                         {
-                            string[] rowValues = row.Split('=');
-                            string name = rowValues[0];
-                            string value = rowValues[1];
+                            ROSInstallEdition edition = new ROSInstallEdition(
+                                IsSetup ?
+                                ROSInstallEdition.ROSEdition.Setup :
+                                ROSInstallEdition.ROSEdition.MiniNT,
+                                Path.Combine(path, "reactos"));
 
-                            if (name.Equals("LiveCD", StringComparison.OrdinalIgnoreCase))
-                                livecd = true;
+                            foreach (var row in section.Values)
+                                if (row.Key.Equals("SystemPath", StringComparison.OrdinalIgnoreCase))
+                                    edition.SystemPath = Path.Combine(path, row.Value.TrimStart(new char[] { '\\' }));
 
-                            if (name.Equals("Setup", StringComparison.OrdinalIgnoreCase))
-                                bootcd = true;
+                            Editions.Add(edition);
                         }
                     }
 
-                    if(!bootcd && !livecd)
-                    {
-                        SetInstallReactOSStatus("LiveCD/BootCD files not found", RosInstallStatus.Error);
-                        return;
-                    }
+                    foreach(var edition in Editions)
+                        cbReactOSEditions.Items.Add(edition);
 
+                    cbReactOSEditions.SelectedItem = Editions.First();
 
+                    SetInstallReactOSStatus("Choose edition from the box below", true);
                 }
             }
             catch
             {
-                SetInstallReactOSStatus("Something wrong", RosInstallStatus.Error);
+                SetInstallReactOSStatus("Something wrong", false);
             }
         }
 
-        enum RosInstallStatus
-        {
-            Error,
-            BootCD,
-            LiveCD
-        }
 
-        void SetInstallReactOSStatus(string text, RosInstallStatus status)
+        void SetInstallReactOSStatus(string text, bool isOK)
         {
             lblInstallReactOSStatus.Text = text;
 
-            if (status == RosInstallStatus.Error)
+            if (!isOK)
                 lblInstallReactOSStatus.ForeColor = Color.DarkRed;
-            else if (status == RosInstallStatus.BootCD)
+            else
                 lblInstallReactOSStatus.ForeColor = Color.DarkBlue;
-            else if (status == RosInstallStatus.LiveCD)
-                lblInstallReactOSStatus.ForeColor = Color.DarkSeaGreen;
         }
 
         private void BtnBrowseInsatallReactOS_Click(object sender, EventArgs e)
