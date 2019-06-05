@@ -37,7 +37,8 @@ namespace Reactofus
                     var fileName = file.Key;
 
                     var result = Path.Combine(dirs.Values[dirId], fileName);
-                    // todo...
+
+                    FileList.Add(fileName, new FileInfo(Path.Combine(drive.Volume.DriveLetter, result)));
                 }
             }
 
@@ -49,15 +50,20 @@ namespace Reactofus
             if (Edition.Edition != ROSInstallEdition.ROSEdition.Setup)
                 return null;
 
+            var CabFiles = new List<IFileInCabToExtract>();
+            var ReactosCabPath = Path.Combine(Edition.SystemPath, "reactos", "reactos.cab");
+
+            foreach(var file in FileList)
+                CabFiles.Add(CabFile.NewToExtract(ReactosCabPath, file.Key, file.Value.FullName));
+
             cabManager.SetCompressionLevel(CabCompressionLevel.None);
             cabManager.SetCancellationToken(null);
 
             cabManager.OnProgress += CabManagerOnProgress;
 
-            var nbProcessed = cabManager.ExtractFileSet(new List<IFileInCabToExtract>
-                {
-                    CabFile.NewToExtract(@"archive.cab", @"folder\file.txt", @"extraction_path.txt")
-                });
+            var nbProcessed = cabManager.ExtractFileSet(CabFiles);
+
+            throw new Exception(nbProcessed.ToString());
 
             return null;
         }

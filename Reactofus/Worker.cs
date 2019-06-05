@@ -13,6 +13,9 @@ namespace Reactofus
 {
     public class Worker
     {
+        public static void RamDiskISOWorkerStart() => new Thread(() => WorkerStart(new RamDiskISOWorker())).Start();
+        public static void InstallROSWorkerStart() => new Thread(() => WorkerStart(new InstallReactOSWorker())).Start();
+
         private static void WorkerStart(DefaultWorker worker)
         {
             Program.MainWnd.Working = true;
@@ -91,8 +94,6 @@ namespace Reactofus
 
             return a.ToString();
         }
-
-        public static void RamDiskISOWorkerStart() => new Thread(() => WorkerStart(new RamDiskISOWorker())).Start();
 
         private static void Prepare(string driveLabel = "ReactOS")
         {

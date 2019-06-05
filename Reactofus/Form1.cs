@@ -171,6 +171,8 @@ namespace Reactofus
             {
                 if (tabControl1.SelectedTab == tabPageRamDisk)
                     Worker.RamDiskISOWorkerStart();
+                else if (tabControl1.SelectedTab == tabPageInstallReactOS)
+                    Worker.InstallROSWorkerStart();
                 else
                     MessageBox.Show("Wrong selection", "Reactofus");
             }
