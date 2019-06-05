@@ -223,5 +223,95 @@ namespace Reactofus
             if (Environment.OSVersion.Version.Major <= 5 && Environment.OSVersion.Version.Minor <= 1)
                 MessageBox.Show("Unsupported Windows version.\r\nWindows Server 2003 required.", "Reactofus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+
+        private void TbPathInstallReactOS_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var path = tbPathInstallReactOS.Text;
+                var ntoskrnlPath = Path.Combine(path, "reactos", "system32", "ntoskrnl.exe");
+                var freeldrPath = Path.Combine(path, "freeldr.ini");
+
+                if (!File.Exists(ntoskrnlPath) &&
+                    !File.Exists(freeldrPath))
+                {
+                    SetInstallReactOSStatus("ReactOS system files not found", RosInstallStatus.Error);
+                    return;
+                }
+                else // kernel & boot info found
+                {
+                    string freeldrConfig = "";
+                    bool bootcd = false, livecd = false;
+
+                    // check freeldr.ini to detect bootcd or livecd
+                    using (StreamReader r = new StreamReader(freeldrPath))
+                        freeldrConfig = r.ReadToEnd();
+
+                    string[] freeldrRows = freeldrConfig.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    for (int i = 0; i < freeldrRows.Length; i++)
+                    {
+                        var row = freeldrRows[i];
+
+                        if (row.Contains('='))
+                        {
+                            string[] rowValues = row.Split('=');
+                            string name = rowValues[0];
+                            string value = rowValues[1];
+
+                            if (name.Equals("LiveCD", StringComparison.OrdinalIgnoreCase))
+                                livecd = true;
+
+                            if (name.Equals("Setup", StringComparison.OrdinalIgnoreCase))
+                                bootcd = true;
+                        }
+                    }
+
+                    if(!bootcd && !livecd)
+                    {
+                        SetInstallReactOSStatus("LiveCD/BootCD files not found", RosInstallStatus.Error);
+                        return;
+                    }
+
+
+                }
+            }
+            catch
+            {
+                SetInstallReactOSStatus("Something wrong", RosInstallStatus.Error);
+            }
+        }
+
+        enum RosInstallStatus
+        {
+            Error,
+            BootCD,
+            LiveCD
+        }
+
+        void SetInstallReactOSStatus(string text, RosInstallStatus status)
+        {
+            lblInstallReactOSStatus.Text = text;
+
+            if (status == RosInstallStatus.Error)
+                lblInstallReactOSStatus.ForeColor = Color.DarkRed;
+            else if (status == RosInstallStatus.BootCD)
+                lblInstallReactOSStatus.ForeColor = Color.DarkBlue;
+            else if (status == RosInstallStatus.LiveCD)
+                lblInstallReactOSStatus.ForeColor = Color.DarkSeaGreen;
+        }
+
+        private void BtnBrowseInsatallReactOS_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog d = new FolderBrowserDialog())
+            {
+                d.Description = "Choose ReactOS Installation/LiveCD files";
+
+                if (d.ShowDialog() == DialogResult.OK)
+                {
+                    tbPathInstallReactOS.Text = d.SelectedPath;
+                }
+            }
+        }
     }
 }

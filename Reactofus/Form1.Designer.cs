@@ -49,10 +49,18 @@
             this.statusProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.linkSetDrive = new System.Windows.Forms.LinkLabel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tabPageInstallReactOS = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnBrowseInsatallReactOS = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tbPathInstallReactOS = new System.Windows.Forms.TextBox();
+            this.lblInstallReactOSStatus = new System.Windows.Forms.Label();
+            this.cbReactOSEditions = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPageMore.SuspendLayout();
             this.tabPageRamDisk.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.tabPageInstallReactOS.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -61,6 +69,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPageMore);
+            this.tabControl1.Controls.Add(this.tabPageInstallReactOS);
             this.tabControl1.Controls.Add(this.tabPageRamDisk);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
@@ -164,7 +173,7 @@
             // btnBrowseISORamDisk
             // 
             this.btnBrowseISORamDisk.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnBrowseISORamDisk.Location = new System.Drawing.Point(493, 91);
+            this.btnBrowseISORamDisk.Location = new System.Drawing.Point(490, 91);
             this.btnBrowseISORamDisk.Name = "btnBrowseISORamDisk";
             this.btnBrowseISORamDisk.Size = new System.Drawing.Size(32, 23);
             this.btnBrowseISORamDisk.TabIndex = 2;
@@ -187,7 +196,7 @@
             this.tbRamDiskISOPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbRamDiskISOPath.Location = new System.Drawing.Point(6, 93);
             this.tbRamDiskISOPath.Name = "tbRamDiskISOPath";
-            this.tbRamDiskISOPath.Size = new System.Drawing.Size(481, 20);
+            this.tbRamDiskISOPath.Size = new System.Drawing.Size(478, 20);
             this.tbRamDiskISOPath.TabIndex = 0;
             // 
             // btnStartStop
@@ -262,6 +271,79 @@
             this.toolTip1.SetToolTip(this.linkSetDrive, "Click to change...");
             this.linkSetDrive.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkSetDrive_LinkClicked);
             // 
+            // tabPageInstallReactOS
+            // 
+            this.tabPageInstallReactOS.Controls.Add(this.cbReactOSEditions);
+            this.tabPageInstallReactOS.Controls.Add(this.lblInstallReactOSStatus);
+            this.tabPageInstallReactOS.Controls.Add(this.label5);
+            this.tabPageInstallReactOS.Controls.Add(this.btnBrowseInsatallReactOS);
+            this.tabPageInstallReactOS.Controls.Add(this.label6);
+            this.tabPageInstallReactOS.Controls.Add(this.tbPathInstallReactOS);
+            this.tabPageInstallReactOS.Location = new System.Drawing.Point(4, 22);
+            this.tabPageInstallReactOS.Name = "tabPageInstallReactOS";
+            this.tabPageInstallReactOS.Size = new System.Drawing.Size(528, 227);
+            this.tabPageInstallReactOS.TabIndex = 2;
+            this.tabPageInstallReactOS.Text = "Install ReactOS";
+            this.tabPageInstallReactOS.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.Location = new System.Drawing.Point(7, 155);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(512, 26);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "Required file system: FAT32";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // btnBrowseInsatallReactOS
+            // 
+            this.btnBrowseInsatallReactOS.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnBrowseInsatallReactOS.Location = new System.Drawing.Point(487, 85);
+            this.btnBrowseInsatallReactOS.Name = "btnBrowseInsatallReactOS";
+            this.btnBrowseInsatallReactOS.Size = new System.Drawing.Size(32, 23);
+            this.btnBrowseInsatallReactOS.TabIndex = 6;
+            this.btnBrowseInsatallReactOS.Text = "...";
+            this.btnBrowseInsatallReactOS.UseVisualStyleBackColor = true;
+            this.btnBrowseInsatallReactOS.Click += new System.EventHandler(this.BtnBrowseInsatallReactOS_Click);
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 71);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(171, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "ReactOS Installation/LiveCD Files:";
+            // 
+            // tbPathInstallReactOS
+            // 
+            this.tbPathInstallReactOS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPathInstallReactOS.Location = new System.Drawing.Point(8, 87);
+            this.tbPathInstallReactOS.Name = "tbPathInstallReactOS";
+            this.tbPathInstallReactOS.Size = new System.Drawing.Size(472, 20);
+            this.tbPathInstallReactOS.TabIndex = 4;
+            this.tbPathInstallReactOS.TextChanged += new System.EventHandler(this.TbPathInstallReactOS_TextChanged);
+            // 
+            // lblInstallReactOSStatus
+            // 
+            this.lblInstallReactOSStatus.AutoSize = true;
+            this.lblInstallReactOSStatus.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblInstallReactOSStatus.Location = new System.Drawing.Point(8, 111);
+            this.lblInstallReactOSStatus.Name = "lblInstallReactOSStatus";
+            this.lblInstallReactOSStatus.Size = new System.Drawing.Size(67, 13);
+            this.lblInstallReactOSStatus.TabIndex = 8;
+            this.lblInstallReactOSStatus.Text = "Choose path";
+            // 
+            // cbReactOSEditions
+            // 
+            this.cbReactOSEditions.FormattingEnabled = true;
+            this.cbReactOSEditions.Location = new System.Drawing.Point(8, 129);
+            this.cbReactOSEditions.Name = "cbReactOSEditions";
+            this.cbReactOSEditions.Size = new System.Drawing.Size(511, 21);
+            this.cbReactOSEditions.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -285,6 +367,8 @@
             this.tabPageRamDisk.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tabPageInstallReactOS.ResumeLayout(false);
+            this.tabPageInstallReactOS.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -312,6 +396,13 @@
         private System.Windows.Forms.LinkLabel linkSetDrive;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TabPage tabPageInstallReactOS;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnBrowseInsatallReactOS;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox tbPathInstallReactOS;
+        private System.Windows.Forms.Label lblInstallReactOSStatus;
+        private System.Windows.Forms.ComboBox cbReactOSEditions;
     }
 }
 
