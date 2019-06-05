@@ -9,7 +9,6 @@ namespace Reactofus
 {
     public class RamDiskISOWorker : DefaultWorker
     {
-        DriveManagerLogicalDisk drive = Program.SelectedDrive as DriveManagerLogicalDisk;
         FileInfo installerFile;
 
         public RamDiskISOWorker CheckDriveFormat()
@@ -18,7 +17,7 @@ namespace Reactofus
                 throw new Exception("Something went wrong");
 
             if (!drive.FileSystem.Equals("fat32", StringComparison.CurrentCultureIgnoreCase))
-                throw new Exception("Drive must be formatted in FAT32.");
+                throw new TrivialException("Drive must be formatted in FAT32.");
 
             return null;
         }

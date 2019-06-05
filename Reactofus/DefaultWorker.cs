@@ -7,5 +7,7 @@ namespace Reactofus
 {
     public class DefaultWorker
     {
+        public DriveManagerLogicalDisk drive => Program.SelectedDrive as DriveManagerLogicalDisk;
+
     }
 }

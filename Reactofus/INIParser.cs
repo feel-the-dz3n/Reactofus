@@ -37,7 +37,7 @@ namespace Reactofus
                 if (row.Contains("="))
                 {
                     // FIX ME: will work when only one =
-                    CurrentSection.Values.Add(row.Split('=')[0], row.Split('=')[1]);
+                    CurrentSection.Values.Add(row.Split('=')[0].Trim(), row.Split('=')[1].Trim());
                 }
             }
         }
