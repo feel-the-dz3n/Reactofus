@@ -31,6 +31,17 @@ namespace Reactofus
             }
         }
 
+        public ROSInstallEdition Edition
+        {
+            get
+            {
+                if (InvokeRequired)
+                    return (ROSInstallEdition)this.Invoke(new Func<ROSInstallEdition>(() => Edition));
+
+                return (ROSInstallEdition)cbReactOSEditions.SelectedItem;
+            }
+        }
+
 
         public bool Aborted = false;
 
@@ -226,9 +237,11 @@ namespace Reactofus
 
         private void TbPathInstallReactOS_TextChanged(object sender, EventArgs e)
         {
+            // Update editions
             try
             {
                 cbReactOSEditions.Items.Clear();
+                cbReactOSEditions.SelectedItem = null;
 
                 var path = tbPathInstallReactOS.Text;
 
@@ -258,13 +271,14 @@ namespace Reactofus
                     {
                         var IsSetup = section.Name.Equals("Setup", StringComparison.OrdinalIgnoreCase);
                         var IsLive = section.Name.Equals("LiveCD", StringComparison.OrdinalIgnoreCase);
+
                         if (IsSetup || IsLive)
                         {
                             ROSInstallEdition edition = new ROSInstallEdition(
                                 IsSetup ?
                                 ROSInstallEdition.ROSEdition.Setup :
                                 ROSInstallEdition.ROSEdition.MiniNT,
-                                Path.Combine(path, "reactos"));
+                                path);
 
                             foreach (var row in section.Values)
                                 if (row.Key.Equals("SystemPath", StringComparison.OrdinalIgnoreCase))
