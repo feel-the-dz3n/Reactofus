@@ -171,7 +171,7 @@ namespace Reactofus
             {
                 if (tabControl1.SelectedTab == tabPageRamDisk)
                     Worker.RamDiskISOWorkerStart();
-                else if (tabControl1.SelectedTab == tabPageInstallReactOS)
+                else if (tabControl1.SelectedTab == tabPageInstallReactOS && cbEnableBetaInstall.Checked)
                     Worker.InstallROSWorkerStart();
                 else
                     MessageBox.Show("Wrong selection", "Reactofus");
@@ -283,7 +283,7 @@ namespace Reactofus
                                 path);
 
                             foreach (var row in section.Values)
-                                if (row.Key.Equals("SystemPath", StringComparison.OrdinalIgnoreCase))
+                                if (row.Name.Equals("SystemPath", StringComparison.OrdinalIgnoreCase))
                                     edition.SystemPath = Path.Combine(path, row.Value.TrimStart(new char[] { '\\' }));
 
                             Editions.Add(edition);
@@ -327,5 +327,8 @@ namespace Reactofus
                 }
             }
         }
+
+        private void CbEnableBetaInstall_CheckedChanged(object sender, EventArgs e)
+            => panel1.Enabled = cbEnableBetaInstall.Checked;
     }
 }

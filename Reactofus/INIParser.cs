@@ -37,7 +37,7 @@ namespace Reactofus
                 if (row.Contains("="))
                 {
                     // FIX ME: will work when only one =
-                    CurrentSection.Values.Add(row.Split('=')[0].Trim(), row.Split('=')[1].Trim());
+                    CurrentSection.Values.Add(new INIValues(row.Split('=')[0].Trim(), row.Split('=')[1].Trim().Trim(new char[] { '"' })));
                 }
             }
         }
@@ -46,8 +46,20 @@ namespace Reactofus
     public class INISection
     {
         public string Name { get; private set; }
-        public Dictionary<string, string> Values = new Dictionary<string, string>();
+        public List<INIValues> Values = new List<INIValues>();
 
         public INISection(string name) => Name = name;
+    }
+
+    public class INIValues
+    {
+        public string Name;
+        public string Value;
+
+        public INIValues(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
     }
 }
