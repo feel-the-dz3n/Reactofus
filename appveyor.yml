@@ -1,9 +1,15 @@
 version: 1.0.{build}
 image: Visual Studio 2017
 configuration: Debug
-platform: Any CPU
+platform:
+- x86
+- x64
 build:
   verbosity: minimal
 artifacts:
-- path: bin
-  name: Reactofus-DotNet
+- path: build/x86
+  name: Reactofus-MSVC-x86
+- path: build/x64
+  name: Reactofus-MSVC-x64
+- path: build/ARM
+  name: Reactofus-MSVC-ARM
