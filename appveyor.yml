@@ -7,9 +7,9 @@ platform:
 build:
   verbosity: minimal
 artifacts:
-- path: build/x86
-  name: Reactofus-MSVC-x86
-- path: build/x64
-  name: Reactofus-MSVC-x64
-- path: build/ARM
-  name: Reactofus-MSVC-ARM
+- path: Debug
+  name: Reactofus-dbg-MSVC-x86
+- path: x64/Debug
+  name: Reactofus-dbg-MSVC-x64
+- path: ARM/Debug
+  name: Reactofus-dbg-MSVC-ARM
