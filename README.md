@@ -1,4 +1,7 @@
-# Reactofus ![build](https://travis-ci.com/feel-the-dz3n/Reactofus.svg?branch=master)
+# This branch is outdated and will be used to merge [MSVC branch](https://github.com/feel-the-dz3n/Reactofus/tree/reactofus-msvc) when finished.
+# Abandoned .NET version [is here](https://github.com/feel-the-dz3n/Reactofus/tree/reactofus-dotnet).
+
+# Reactofus
 Tool to deploy ReactOS on fixed or removable drives.
 
 ![image](https://user-images.githubusercontent.com/25367511/59030578-05feb400-886a-11e9-9ec0-9f4172c068bf.png)
