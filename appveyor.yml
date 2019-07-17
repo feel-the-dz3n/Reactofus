@@ -5,5 +5,5 @@ platform: Any CPU
 build:
   verbosity: minimal
 artifacts:
-- path: bin
+- path: bin/
   name: Reactofus-DotNet
