@@ -1,3 +1,4 @@
+# WARNING! This program is totally broken since ReactOS updated. Don't use it. Use official instructions instead.
 # .NET version is abandoned. Go to [MSVC branch](https://github.com/feel-the-dz3n/Reactofus/tree/reactofus-msvc) (WIP).
 
 # Reactofus .NET [![Build status](https://ci.appveyor.com/api/projects/status/hldvu476t1ic9xgn/branch/reactofus-dotnet?svg=true)](https://ci.appveyor.com/project/feel-the-dz3n/reactofus/branch/reactofus-dotnet)
